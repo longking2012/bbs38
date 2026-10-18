@@ -1,0 +1,66 @@
+# GitHub 推送指南
+
+## 1. 创建GitHub仓库
+
+1. 打开 https://github.com/repositories/new
+2. 仓库名: `bbs38`
+3. 公开/私有: Public（推荐，GitHub Pages需要）
+4. 不要勾选 "Add a README file"
+5. 点击 "Create repository"
+
+## 2. 推送代码
+
+```bash
+cd F:\BBS\github-repo
+
+# 添加远程仓库
+git remote add origin https://github.com/你的用户名/bbs38.git
+
+# 推送到GitHub
+git branch -M main
+git push -u origin main
+```
+
+## 3. 启用GitHub Pages
+
+1. 进入仓库 Settings
+2. 点击 Pages
+3. Build and deployment:
+   - Source: Deploy from a branch
+   - Branch: main
+   - Folder: `/pages`
+4. 点击 Save
+
+等待1-2分钟，访问: `https://你的用户名.github.io/bbs38`
+
+## 4. 配置GitHub Actions自动同步
+
+1. Settings → Secrets and variables → Actions
+2. 添加 Secret:
+   - `BBS_URL`: `http://194.147.16.88:38917`
+
+## 5. 文件结构
+
+```
+github-repo/
+├── .github/workflows/sync.yml  # 自动同步
+├── pages/                      # GitHub Pages静态站
+│   ├── index.html              # 展示页面
+│   └── data.json               # 数据文件
+├── src/                        # BBS代码备份
+│   ├── app.js
+│   ├── store.js
+│   └── ...
+├── README.md
+└── .gitignore
+```
+
+## 6. 手动更新数据
+
+```bash
+cd F:\BBS\github-repo
+# 更新data.json后
+git add pages/data.json
+git commit -m "update: sync BBS data"
+git push
+```
