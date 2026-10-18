@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>三十八中BBS - 校园论坛</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); color: #eee; line-height: 1.6; min-height: 100vh; }
+.container { max-width: 900px; margin: 0 auto; padding: 20px; }
+.header { text-align: center; padding: 50px 0 30px; }
+.header h1 { font-size: 3em; background: linear-gradient(135deg, #e94560, #ff6b6b); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 10px; }
+.header .subtitle { color: #aaa; font-size: 1.2em; margin-bottom: 20px; }
+.header .badges { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+.badge { display: inline-block; background: rgba(233,69,96,0.2); color: #e94560; padding: 6px 16px; border-radius: 20px; font-size: 0.9em; border: 1px solid rgba(233,69,96,0.3); }
+.hero { background: rgba(15,52,96,0.5); border-radius: 16px; padding: 30px; margin: 30px 0; text-align: center; border: 1px solid rgba(233,69,96,0.2); }
+.hero h2 { color: #e94560; margin-bottom: 15px; }
+.hero p { color: #ccc; margin-bottom: 20px; }
+.btn { display: inline-block; padding: 12px 30px; background: linear-gradient(135deg, #e94560, #ff6b6b); color: #fff; text-decoration: none; border-radius: 25px; font-size: 1.1em; transition: transform 0.3s, box-shadow 0.3s; }
+.btn:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(233,69,96,0.4); }
+.section { background: rgba(15,52,96,0.3); border-radius: 16px; padding: 25px; margin: 20px 0; border: 1px solid rgba(255,255,255,0.05); }
+.section h2 { color: #e94560; margin-bottom: 20px; font-size: 1.4em; display: flex; align-items: center; gap: 10px; }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minminmax(140px, 1fr)); gap: 15px; }
+.stat-card { background: rgba(233,69,96,0.1); border-radius: 12px; padding: 20px; text-align: center; border: 1px solid rgba(233,69,96,0.2); }
+.stat-card .num { font-size: 2.5em; color: #e94560; font-weight: bold; }
+.stat-card .label { color: #aaa; font-size: 0.9em; margin-top: 5px; }
+.thread { background: rgba(15,52,96,0.5); border-radius: 12px; padding: 18px; margin: 12px 0; border-left: 4px solid #e94560; transition: transform 0.2s; }
+.thread:hover { transform: translateX(5px); }
+.thread-title { color: #fff; font-size: 1.15em; margin-bottom: 8px; font-weight: 500; }
+.thread-meta { color: #888; font-size: 0.85em; display: flex; gap: 15px; flex-wrap: wrap; }
+.thread-meta span { display: flex; align-items: center; gap: 4px; }
+.features { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; }
+.feature { background: rgba(15,52,96,0.5); border-radius: 12px; padding: 20px; border: 1px solid rgba(255,255,255,0.05); }
+.feature h3 { color: #e94560; margin-bottom: 8px; font-size: 1.1em; }
+.feature p { color: #aaa; font-size: 0.9em; }
+.footer { text-align: center; padding: 40px 0; color: #666; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 40px; }
+.footer a { color: #e94560; text-decoration: none; }
+.status-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; }
+.status-online { background: #2ed573; box-shadow: 0 0 10px #2ed573; }
+@media (max-width: 600px) { .header h1 { font-size: 2em; } .stats { grid-template-columns: 1fr 1fr; } .features { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>🏫 三十八中BBS</h1>
+    <p class="subtitle">合肥市第三十八中学 · 校园论坛</p>
+    <div class="badges">
+      <span class="badge">🔄 QQ频道同步</span>
+      <span class="badge">💬 评论自动抓取</span>
+      <span class="badge"><span class="status-dot status-online"></span> 实时在线</span>
+    </div>
+  </div>
+
+  <div class="hero">
+    <h2>欢迎访问三十八中BBS</h2>
+    <p>校园生活的记录者，同学之间的桥梁</p>
+    <a href="https://38middle.brightmoon.work" class="btn" target="_blank">🚀 进入论坛</a>
+  </div>
+
+  <div class="section">
+    <h2>📊 论坛统计</h2>
+    <div class="stats">
+      <div class="stat-card"><div class="num" id="threads">-</div><div class="label">帖子总数</div></div>
+      <div class="stat-card"><div class="num" id="replies">-</div><div class="label">回复总数</div></div>
+      <div class="stat-card"><div class="num" id="users">7</div><div class="label">注册用户</div></div>
+      <div class="stat-card"><div class="num" id="sync-time">-</div><div class="label">最后同步</div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>🔥 最新帖子</h2>
+    <div id="threads-list"><p style="text-align:center;color:#888;">加载中...</p></div>
+  </div>
+
+  <div class="section">
+    <h2>✨ 功能特性</h2>
+    <div class="features">
+      <div class="feature">
+        <h3>🔄 QQ频道同步</h3>
+        <p>每60秒自动同步QQ频道新帖子，保持内容最新</p>
+      </div>
+      <div class="feature">
+        <h3>💬 评论抓取</h3>
+        <p>每5分钟自动抓取频道评论，完整还原讨论</p>
+      </div>
+      <div class="feature">
+        <h3>📁 文件上传</h3>
+        <p>支持图片、文档上传，远程服务器同步</p>
+      </div>
+      <div class="feature">
+        <h3>⭐ 互动系统</h3>
+        <p>点赞、收藏、回复，完善的用户互动</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>🔗 相关链接</h2>
+    <p style="margin-bottom:10px;"><strong>线上论坛:</strong> <a href="https://38middle.brightmoon.work" style="color:#e94560;">https://38middle.brightmoon.work</a></p>
+    <p style="margin-bottom:10px;"><strong>GitHub仓库:</strong> <a href="https://github.com/longking2012/bbs38" style="color:#e94560;">github.com/longking2012/bbs38</a></p>
+    <p><strong>技术文档:</strong> 零依赖Node.js实现</p>
+  </div>
+
+  <div class="footer">
+    <p>三十八中BBS © 2026 · 由 若水凡心 维护</p>
+    <p>数据来源: QQ频道自动同步 · <a href="https://github.com/longking2012/bbs38">GitHub</a></p>
+  </div>
+</div>
+
+<script>
+async function loadData() {
+  try {
+    const resp = await fetch('data.json?t=' + Date.now());
+    if (!resp.ok) throw new Error('Failed');
+    const data = await resp.json();
+    
+    document.getElementById('threads').textContent = data.stats.threads || 0;
+    document.getElementById('replies').textContent = data.stats.replies || 0;
+    document.getElementById('sync-time').textContent = (data.stats.updated || '-').split(' ')[1] || '-';
+    
+    const listEl = document.getElementById('threads-list');
+    if (data.threads && data.threads.length > 0) {
+      listEl.innerHTML = data.threads.map(t => `
+        <div class="thread">
+          <div class="thread-title">${t.title || '无标题'}</div>
+          <div class="thread-meta">
+            <span>👤 ${t.author || '匿名'}</span>
+            <span>💬 ${t.replies || 0}回复</span>
+            <span>👁 ${t.views || 0}浏览</span>
+            <span>📅 ${t.date || '-'}</span>
+          </div>
+        </div>
+      `).join('');
+    } else {
+      listEl.innerHTML = '<p style="text-align:center;color:#888;">暂无帖子数据</p>';
+    }
+  } catch (e) {
+    console.error('加载数据失败:', e);
+    document.getElementById('threads').textContent = 'N/A';
+    document.getElementById('threads-list').innerHTML = '<p style="text-align:center;color:#888;">数据加载失败</p>';
+  }
+}
+
+loadData();
+setInterval(loadData, 300000);
+</script>
+</body>
+</html>
