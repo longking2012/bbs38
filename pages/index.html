@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>三十八中BBS</title>
+<title>涓夊崄鍏腑BBS</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #1a1a2e; color: #eee; line-height: 1.6; }
@@ -33,82 +33,80 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 <body>
 <div class="container">
   <div class="header">
-    <h1>🏫 三十八中BBS</h1>
-    <p>合肥市第三十八中学 · 校园论坛</p>
-    <p><span class="badge">QQ频道同步</span><span class="badge">自动评论</span><span class="badge">实时在线</span></p>
+    <h1>馃彨 涓夊崄鍏腑BBS</h1>
+    <p>鍚堣偉甯傜涓夊崄鍏腑瀛?路 鏍″洯璁哄潧</p>
+    <p><span class="badge">QQ棰戦亾鍚屾</span><span class="badge">鑷姩璇勮</span><span class="badge">瀹炴椂鍦ㄧ嚎</span></p>
   </div>
 
   <div class="section">
-    <h2>📊 论坛统计</h2>
+    <h2>馃搳 璁哄潧缁熻</h2>
     <div class="stats">
-      <div class="stat-card"><div class="num" id="threads">-</div><div class="label">帖子总数</div></div>
-      <div class="stat-card"><div class="num" id="replies">-</div><div class="label">回复总数</div></div>
-      <div class="stat-card"><div class="num" id="users">-</div><div class="label">注册用户</div></div>
-      <div class="stat-card"><div class="num" id="status">-</div><div class="label">服务状态</div></div>
+      <div class="stat-card"><div class="num" id="threads">-</div><div class="label">甯栧瓙鎬绘暟</div></div>
+      <div class="stat-card"><div class="num" id="replies">-</div><div class="label">鍥炲鎬绘暟</div></div>
+      <div class="stat-card"><div class="num" id="users">-</div><div class="label">娉ㄥ唽鐢ㄦ埛</div></div>
+      <div class="stat-card"><div class="num" id="status">-</div><div class="label">鏈嶅姟鐘舵€?/div></div>
     </div>
   </div>
 
   <div class="section">
-    <h2>🔥 热门帖子</h2>
+    <h2>馃敟 鐑棬甯栧瓙</h2>
     <div id="threads-list"></div>
   </div>
 
   <div class="section">
-    <h2>🔗 访问链接</h2>
-    <p><strong>线上地址:</strong> <a href="https://38middle.brightmoon.work" style="color:#e94560">https://38middle.brightmoon.work</a></p>
-    <p><strong>GitHub:</strong> <a href="https://github.com/ruoshuifanxin/bbs38" style="color:#e94560">github.com/ruoshuifanxin/bbs38</a></p>
+    <h2>馃敆 璁块棶閾炬帴</h2>
+    <p><strong>绾夸笂鍦板潃:</strong> <a href="https://38middle.brightmoon.work" style="color:#e94560">https://38middle.brightmoon.work</a></p>
+    <p><strong>GitHub:</strong> <a href="https://github.com/longking2012/bbs38" style="color:#e94560">github.com/longking2012/bbs38</a></p>
   </div>
 
   <div class="footer">
-    <p>三十八中BBS © 2026 · 由 若水凡心 维护</p>
-    <p>数据来源: QQ频道自动同步 · 最后更新: <span id="update-time">-</span></p>
+    <p>涓夊崄鍏腑BBS 漏 2026 路 鐢?鑻ユ按鍑″績 缁存姢</p>
+    <p>鏁版嵁鏉ユ簮: QQ棰戦亾鑷姩鍚屾 路 鏈€鍚庢洿鏂? <span id="update-time">-</span></p>
   </div>
 </div>
 
 <script>
-// 从GitHub Pages数据文件加载
+// 浠嶨itHub Pages鏁版嵁鏂囦欢鍔犺浇
 async function loadData() {
   try {
     const resp = await fetch('data.json');
     if (!resp.ok) throw new Error('Failed');
     const data = await resp.json();
     
-    // 更新统计
+    // 鏇存柊缁熻
     document.getElementById('threads').textContent = data.stats.threads;
     document.getElementById('replies').textContent = data.stats.replies;
     document.getElementById('users').textContent = data.stats.users;
     document.getElementById('update-time').textContent = data.stats.updated;
     
-    // 服务状态
-    const statusEl = document.getElementById('status');
+    // 鏈嶅姟鐘舵€?    const statusEl = document.getElementById('status');
     if (data.stats.online) {
-      statusEl.innerHTML = '<span class="status status-online">在线</span>';
+      statusEl.innerHTML = '<span class="status status-online">鍦ㄧ嚎</span>';
     } else {
-      statusEl.innerHTML = '<span class="status status-offline">离线</span>';
+      statusEl.innerHTML = '<span class="status status-offline">绂荤嚎</span>';
     }
     
-    // 热门帖子
+    // 鐑棬甯栧瓙
     const listEl = document.getElementById('threads-list');
     listEl.innerHTML = data.threads.map(t => `
       <div class="thread">
         <div class="thread-title">${t.title}</div>
         <div class="thread-meta">
-          <span>👤 ${t.author}</span>
-          <span>💬 ${t.replies}回复</span>
-          <span>👁 ${t.views}浏览</span>
+          <span>馃懁 ${t.author}</span>
+          <span>馃挰 ${t.replies}鍥炲</span>
+          <span>馃憗 ${t.views}娴忚</span>
           <span class="thread-reply">${t.date}</span>
         </div>
       </div>
     `).join('');
   } catch (e) {
-    console.error('加载数据失败:', e);
+    console.error('鍔犺浇鏁版嵁澶辫触:', e);
     document.getElementById('threads').textContent = 'N/A';
   }
 }
 
 loadData();
-// 每分钟刷新一次
-setInterval(loadData, 60000);
+// 姣忓垎閽熷埛鏂颁竴娆?setInterval(loadData, 60000);
 </script>
 </body>
 </html>
