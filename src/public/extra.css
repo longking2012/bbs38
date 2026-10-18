@@ -1,0 +1,80 @@
+/* 编辑器 + 表情 + 提及 + 图片 + 补充 */
+.editor-tools { display: flex; gap: 6px; margin-bottom: 6px; }
+.emoji-btn, .img-btn { cursor: pointer; background: var(--body-bg); border: 1px solid var(--border2); border-radius: var(--radius); padding: 4px 8px; font-size: 14px; transition: background .15s; }
+.emoji-btn:hover, .img-btn:hover { background: var(--control-hover); }
+.img-btn { display: inline-flex; align-items: center; gap: 4px; position: relative; }
+.emoji-panel { position: absolute; z-index: 50; background: var(--body-bg); border: 1px solid var(--border2); border-radius: var(--radius); padding: 6px; box-shadow: var(--shadow); display: grid; grid-template-columns: repeat(8, 1fr); gap: 2px; max-width: 300px; }
+.emoji-item { border: 0; background: transparent; font-size: 18px; cursor: pointer; border-radius: var(--radius); padding: 3px; }
+.emoji-item:hover { background: var(--control-bg); }
+.content-field { margin-bottom: 8px; }
+.field-label { font-size: 13px; color: var(--muted); margin-bottom: 4px; display: block; }
+.md-area { font-family: var(--font); }
+.mention { color: var(--link); background: var(--control-bg); border-radius: 3px; padding: 0 3px; }
+.mention:hover { background: var(--primary); color: var(--primary-text); text-decoration: none; }
+.post-img { max-width: 100%; max-height: 400px; border-radius: var(--radius); margin: 6px 0; }
+img.avatar { object-fit: cover; }
+.avatar-row { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.avatar-row .avatar { width: 48px; height: 48px; }
+.config-card { background: var(--card-bg); border-radius: var(--radius); padding: 16px; margin: 0 15px 14px; }
+.config-card h3 { margin: 0 0 8px; font-size: 15px; font-weight: normal; }
+.config-note { font-size: 12px; color: var(--muted); line-height: 1.7; }
+.code-box { background: var(--body-bg); border: 1px solid var(--border2); border-radius: var(--radius); padding: 6px 8px; font-family: ui-monospace, Consolas, monospace; font-size: 12px; overflow-x: auto; }
+.level-badge { display: inline-block; font-size: 10px; padding: 1px 5px; border-radius: 3px; color: #fff; margin-left: 4px; font-weight: normal; vertical-align: middle; }
+.like-btn { background: none; border: 0; color: var(--muted); border-radius: var(--radius); padding: 4px 8px; cursor: pointer; font-size: 13px; transition: background .15s; }
+.like-btn:hover { background: var(--control-bg); }
+.like-btn.liked { color: var(--primary); }
+.post-signature { margin: 8px 0 0; padding-top: 8px; border-top: 1px dashed var(--border2); }
+.quote-btn { background: none; border: 0; color: var(--muted); cursor: pointer; padding: 4px 8px; font-size: 13px; border-radius: var(--radius); }
+.quote-btn:hover { background: var(--control-bg); }
+.sort-bar { display: flex; gap: 6px; margin: 0 15px 10px; }
+.sort-bar .active { background: var(--primary); color: var(--primary-text); }
+.lightbox { position: fixed; inset: 0; background: rgba(0,0,0,.85); display: flex; align-items: center; justify-content: center; z-index: 1000; cursor: zoom-out; }
+.lightbox img { max-width: 90vw; max-height: 90vh; border-radius: var(--radius); box-shadow: 0 8px 32px rgba(0,0,0,.5); }
+/* cat-pill 用板块颜色 */
+.cat-pill { display: inline-flex; align-items: center; gap: 4px; padding: 1px 6px; border-radius: var(--radius); font-size: 11px; background: var(--control-bg); color: var(--c, var(--link)); text-decoration: none; transition: opacity .15s; }
+.cat-pill:hover { opacity: 0.8; text-decoration: none; }
+.cat-pill .cat-dot { background: var(--c, var(--link)); }
+.board-head .cat-dot.lg, .board-head .cat-dot { background: var(--c, var(--link)); }
+
+/* 热搜列表 */
+.hot-item { padding: 6px 0; border-bottom: 1px solid var(--border); }
+.hot-item:last-child { border-bottom: 0; }
+.hot-rank { display: inline-block; width: 20px; height: 20px; line-height: 20px; text-align: center; border-radius: 4px; font-size: 11px; font-weight: 700; background: var(--control-bg); color: var(--muted); margin-right: 6px; }
+.hot-item:nth-child(1) .hot-rank { background: #f44; color: #fff; }
+.hot-item:nth-child(2) .hot-rank { background: #f80; color: #fff; }
+.hot-item:nth-child(3) .hot-rank { background: #fc0; color: #fff; }
+.hot-item a { color: var(--text); text-decoration: none; font-size: 13px; }
+.hot-item a:hover { color: var(--link); }
+.hot-meta { margin-top: 2px; }
+
+/* 实时消息 */
+.activity-item { padding: 6px 0; border-bottom: 1px solid var(--border); }
+.activity-item:last-child { border-bottom: 0; }
+.activity-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
+.activity-dot.thread { background: var(--primary); }
+.activity-dot.reply { background: #f59e0b; }
+.activity-body a { color: var(--text); text-decoration: none; font-size: 13px; }
+.activity-body a:hover { color: var(--link); }
+.activity-meta { margin-top: 2px; }
+
+/* 今日数据卡 */
+.today-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px; margin-bottom: 12px; }
+.today-head { font-size: 14px; font-weight: 600; margin-bottom: 10px; }
+.today-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 10px; }
+.today-grid > div { text-align: center; }
+.today-grid b { display: block; font-size: 18px; }
+.today-grid span { font-size: 11px; color: var(--muted); }
+.checkin-btn { width: 100%; text-align: center; box-sizing: border-box; }
+.checkin-done { text-align: center; padding: 8px; background: var(--control-bg); border-radius: var(--radius); color: var(--muted); font-size: 13px; }
+
+/* 在线用户 */
+.online-list { display: flex; flex-wrap: wrap; gap: 6px; }
+.online-user { display: inline-flex; align-items: center; gap: 4px; text-decoration: none; padding: 2px 6px; border-radius: var(--radius); background: var(--control-bg); font-size: 12px; }
+.online-user span { color: var(--text); }
+.online-user:hover { background: var(--control-hover); }
+
+/* 等级进度条 */
+.level-progress { margin: 10px 0; }
+.level-bar { height: 8px; background: var(--control-bg); border-radius: 4px; overflow: hidden; }
+.level-bar span { display: block; height: 100%; transition: width .4s; }
+.level-text { margin-top: 4px; }

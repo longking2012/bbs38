@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>三十八中BBS</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #1a1a2e; color: #eee; line-height: 1.6; }
+.container { max-width: 900px; margin: 0 auto; padding: 20px; }
+.header { text-align: center; padding: 40px 0; border-bottom: 1px solid #333; }
+.header h1 { font-size: 2.5em; color: #e94560; margin-bottom: 10px; }
+.header p { color: #aaa; font-size: 1.1em; }
+.badge { display: inline-block; background: #e94560; color: #fff; padding: 5px 15px; border-radius: 20px; font-size: 0.9em; margin: 5px; }
+.section { background: #16213e; border-radius: 12px; padding: 25px; margin: 20px 0; }
+.section h2 { color: #e94560; margin-bottom: 15px; font-size: 1.3em; }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; }
+.stat-card { background: #0f3460; border-radius: 10px; padding: 20px; text-align: center; }
+.stat-card .num { font-size: 2em; color: #e94560; font-weight: bold; }
+.stat-card .label { color: #aaa; font-size: 0.9em; }
+.thread { background: #0f3460; border-radius: 10px; padding: 15px; margin: 10px 0; border-left: 3px solid #e94560; }
+.thread-title { color: #fff; font-size: 1.1em; margin-bottom: 5px; }
+.thread-meta { color: #aaa; font-size: 0.85em; }
+.thread-meta span { margin-right: 15px; }
+.thread-reply { color: #e94560; }
+.footer { text-align: center; padding: 30px 0; color: #666; border-top: 1px solid #333; margin-top: 40px; }
+.status { display: inline-block; padding: 3px 10px; border-radius: 15px; font-size: 0.8em; }
+.status-online { background: #2ed573; color: #000; }
+.status-offline { background: #e94560; color: #fff; }
+@media (max-width: 600px) { .header h1 { font-size: 1.8em; } .stats { grid-template-columns: 1fr 1fr; } }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>🏫 三十八中BBS</h1>
+    <p>合肥市第三十八中学 · 校园论坛</p>
+    <p><span class="badge">QQ频道同步</span><span class="badge">自动评论</span><span class="badge">实时在线</span></p>
+  </div>
+
+  <div class="section">
+    <h2>📊 论坛统计</h2>
+    <div class="stats">
+      <div class="stat-card"><div class="num" id="threads">-</div><div class="label">帖子总数</div></div>
+      <div class="stat-card"><div class="num" id="replies">-</div><div class="label">回复总数</div></div>
+      <div class="stat-card"><div class="num" id="users">-</div><div class="label">注册用户</div></div>
+      <div class="stat-card"><div class="num" id="status">-</div><div class="label">服务状态</div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>🔥 热门帖子</h2>
+    <div id="threads-list"></div>
+  </div>
+
+  <div class="section">
+    <h2>🔗 访问链接</h2>
+    <p><strong>线上地址:</strong> <a href="https://38middle.brightmoon.work" style="color:#e94560">https://38middle.brightmoon.work</a></p>
+    <p><strong>GitHub:</strong> <a href="https://github.com/ruoshuifanxin/bbs38" style="color:#e94560">github.com/ruoshuifanxin/bbs38</a></p>
+  </div>
+
+  <div class="footer">
+    <p>三十八中BBS © 2026 · 由 若水凡心 维护</p>
+    <p>数据来源: QQ频道自动同步 · 最后更新: <span id="update-time">-</span></p>
+  </div>
+</div>
+
+<script>
+// 从GitHub Pages数据文件加载
+async function loadData() {
+  try {
+    const resp = await fetch('data.json');
+    if (!resp.ok) throw new Error('Failed');
+    const data = await resp.json();
+    
+    // 更新统计
+    document.getElementById('threads').textContent = data.stats.threads;
+    document.getElementById('replies').textContent = data.stats.replies;
+    document.getElementById('users').textContent = data.stats.users;
+    document.getElementById('update-time').textContent = data.stats.updated;
+    
+    // 服务状态
+    const statusEl = document.getElementById('status');
+    if (data.stats.online) {
+      statusEl.innerHTML = '<span class="status status-online">在线</span>';
+    } else {
+      statusEl.innerHTML = '<span class="status status-offline">离线</span>';
+    }
+    
+    // 热门帖子
+    const listEl = document.getElementById('threads-list');
+    listEl.innerHTML = data.threads.map(t => `
+      <div class="thread">
+        <div class="thread-title">${t.title}</div>
+        <div class="thread-meta">
+          <span>👤 ${t.author}</span>
+          <span>💬 ${t.replies}回复</span>
+          <span>👁 ${t.views}浏览</span>
+          <span class="thread-reply">${t.date}</span>
+        </div>
+      </div>
+    `).join('');
+  } catch (e) {
+    console.error('加载数据失败:', e);
+    document.getElementById('threads').textContent = 'N/A';
+  }
+}
+
+loadData();
+// 每分钟刷新一次
+setInterval(loadData, 60000);
+</script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+name: Sync BBS Data
+
+on:
+  schedule:
+    # 每30分钟同步一次
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Sync data from BBS
+        run: |
+          # 从BBS获取最新数据
+          curl -s "http://194.147.16.88:38917/api/recent?limit=20" -o /tmp/bbs_data.json 2>/dev/null || echo '{"threads":[]}' > /tmp/bbs_data.json
+          
+          # 转换数据格式
+          node -e "
+          const fs = require('fs');
+          let data;
+          try {
+            data = JSON.parse(fs.readFileSync('/tmp/bbs_data.json', 'utf8'));
+          } catch(e) {
+            data = { threads: [] };
+          }
+          
+          const threads = (data.threads || []).slice(0, 15).map(t => ({
+            title: t.title || '无标题',
+            author: t.username || '匿名',
+            replies: t.lastReplyAt ? 1 : 0,
+            views: t.views || 0,
+            date: t.createdAt ? new Date(t.createdAt).toLocaleDateString('zh-CN') : '-'
+          }));
+          
+          const output = {
+            stats: {
+              threads: data.threads ? data.threads.length : 0,
+              replies: 0,
+              users: 7,
+              online: true,
+              updated: new Date().toISOString().slice(0, 16).replace('T', ' ')
+            },
+            threads: threads
+          };
+          
+          fs.writeFileSync('pages/data.json', JSON.stringify(output, null, 2));
+          console.log('Synced', threads.length, 'threads');
+          "
+
+      - name: Deploy to Pages
+        uses: actions/deploy-pages@v4
+        with:
+          path: pages/
+
+      - name: Update Pages
+        uses: actions/update-pages@v3
