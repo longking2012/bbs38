@@ -52,14 +52,14 @@ jobs:
             threads: threads
           };
           
-          fs.writeFileSync('pages/data.json', JSON.stringify(output, null, 2));
+          fs.writeFileSync('docs/data.json', JSON.stringify(output, null, 2));
           console.log('Synced', threads.length, 'threads');
           "
 
       - name: Deploy to Pages
         uses: actions/deploy-pages@v4
         with:
-          path: pages/
+          path: docs/
 
       - name: Update Pages
         uses: actions/update-pages@v3
