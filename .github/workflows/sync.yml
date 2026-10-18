@@ -2,13 +2,16 @@ name: Sync BBS Data
 
 on:
   schedule:
-    # 每5分钟同步一次
     - cron: '*/5 * * * *'
   workflow_dispatch:
 
 jobs:
   sync:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -20,10 +23,8 @@ jobs:
 
       - name: Sync data from BBS
         run: |
-          # 从BBS获取最新数据
           curl -s "http://194.147.16.88:38917/api/recent?limit=20" -o /tmp/bbs_data.json 2>/dev/null || echo '{"threads":[]}' > /tmp/bbs_data.json
           
-          # 转换数据格式
           node -e "
           const fs = require('fs');
           let data;
@@ -56,10 +57,15 @@ jobs:
           console.log('Synced', threads.length, 'threads');
           "
 
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/data.json
+          git commit -m "update: sync BBS data $(date -u +'%Y-%m-%dT%H:%M:%SZ')" --allow-empty
+          git push
+
       - name: Deploy to Pages
         uses: actions/deploy-pages@v4
         with:
           path: docs/
-
-      - name: Update Pages
-        uses: actions/update-pages@v3
